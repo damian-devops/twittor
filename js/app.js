@@ -3,12 +3,16 @@ var swLocation = '/twittor/sw.js'
 
 if (navigator.serviceWorker) {
 
-    if(url.includes('localhost')){
+    if (url.includes('localhost')) {
         swLocation = '/sw.js';
     }
-
-    navigator.serviceWorker.register(swLocation);
+    navigator.serviceWorker.register(swLocation).then(function (registration) {
+        console.log('Registration successful, scope is:', registration.scope);
+    }).catch(function (error) {
+        console.log('Service worker registration failed, error:', error);
+    });
 }
+
 
 // Referencias de jQuery
 
@@ -38,13 +42,13 @@ function crearMensajeHTML(mensaje, personaje) {
     var content = `
     <li class="animated fadeIn fast">
         <div class="avatar">
-            <img src="img/avatars/${ personaje }.jpg">
+            <img src="img/avatars/${ personaje}.jpg">
         </div>
         <div class="bubble-container">
             <div class="bubble">
-                <h3>@${ personaje }</h3>
+                <h3>@${ personaje}</h3>
                 <br/>
-                ${ mensaje }
+                ${ mensaje}
             </div>
             
             <div class="arrow"></div>
@@ -82,7 +86,7 @@ function logIn(ingreso) {
 
 
 // Seleccion de personaje
-avatarBtns.on('click', function() {
+avatarBtns.on('click', function () {
 
     usuario = $(this).data('user');
 
@@ -93,14 +97,14 @@ avatarBtns.on('click', function() {
 });
 
 // Boton de salir
-salirBtn.on('click', function() {
+salirBtn.on('click', function () {
 
     logIn(false);
 
 });
 
 // Boton de nuevo mensaje
-nuevoBtn.on('click', function() {
+nuevoBtn.on('click', function () {
 
     modal.removeClass('oculto');
     modal.animate({
@@ -111,18 +115,18 @@ nuevoBtn.on('click', function() {
 });
 
 // Boton de cancelar mensaje
-cancelarBtn.on('click', function() {
+cancelarBtn.on('click', function () {
     modal.animate({
         marginTop: '+=1000px',
         opacity: 0
-    }, 200, function() {
+    }, 200, function () {
         modal.addClass('oculto');
         txtMensaje.val('');
     });
 });
 
 // Boton de enviar mensaje
-postBtn.on('click', function() {
+postBtn.on('click', function () {
 
     var mensaje = txtMensaje.val();
     if (mensaje.length === 0) {
